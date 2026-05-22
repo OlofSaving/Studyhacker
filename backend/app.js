@@ -92,7 +92,6 @@ app.use(async (req, res, next) => {
 app.get("/", (req, res) => {
   const isAuthenticated = req.oidc.isAuthenticated();
   isAuthenticated ? res.redirect("startpage.html") : res.redirect("login.html");
-  // res.redirect("startpage.html");
 });
 
 

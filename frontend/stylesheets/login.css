@@ -1,33 +1,50 @@
 body {
     margin: 0;
-    background-color: #96cfa1;
-    margin-bottom: 2000px;
+    font-family: Inter;
+}
+
+.main {
+    background-image: url("../images/naturbild.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.studyhelper {
+    color: black;
+    font-weight: bold;
+    font-size: 80px;
+
+    margin: 0 0 30px 0;
 }
 
 .login {
-    /* margin-left: 30%; */
-    margin-top: 15%;
-    max-width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 .button {
     background-color: #94C8F3;
-    color: white;
-    /* margin-top: 20px; */
+    color: black;
 
-    font-size: 20px;
-    font-family: Inter;
+    font-size: 32px;
     font-weight: bold;
 
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
 
-    padding-top: 90px;
-    padding-bottom: 90px;
-    padding-right: 90px;
-    padding-left: 90px;
+    padding: 40px 80px;
+    cursor: pointer;
 }
 
 .button:hover {
