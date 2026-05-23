@@ -11,7 +11,8 @@ import {
 } from "/script-API/boardpage_API.js";
 
 import{
-    getBoardByID
+    getBoardByID,
+    getPersonalMail
 } from "/script-API/startpage_API.js"
 
 
@@ -49,8 +50,12 @@ async function init() {
     await displayTasks();
 }
 
+const user = await getPersonalMail();
+
+socket.emit('join-user-room', user.user_id);
 socket.emit("joinBoard", boardId);
 
+console.log("Personal id :", user.user_id);
 console.log("Current board id:", boardId);
 
 window.addEventListener("beforeunload", () => {

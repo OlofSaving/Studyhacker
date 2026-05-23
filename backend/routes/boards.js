@@ -8,7 +8,7 @@ const { requiresAuth } = require('express-openid-connect'); //new
 //lets boards route hand off requests to subcards
 const subcardRouter = require("./subcards");
 
-const { emitUserAdded } = require('../socket_events/board_events');
+const { emitUserAdded, emitBoardDeleted } = require('../socket_events/board_events');
 
 // Create a router that will hold routes related to boards.
 const router = express.Router({ mergeParams: true });
@@ -172,6 +172,8 @@ router.get('/type/:type', requiresAuth(), async (req, res) => {
 //delete board by id
 router.delete('/:board_id', requiresAuth(), async (req, res) => {
   try {
+    const io = req.app.get('io');
+
     const email = req.oidc.user.email;
     const user = await pool.query('SELECT * FROM users WHERE user_mail = $1', [email]);
 
@@ -189,6 +191,12 @@ router.delete('/:board_id', requiresAuth(), async (req, res) => {
     if (!connection.rows[0]) {
       return res.status(404).json({ error: 'Ingen koppling?!' });
     }
+
+    //get all board members
+    const members = await pool.query(
+      'SELECT user_id FROM user_board WHERE board_id = $1',
+      [board_id]
+    )
 
     // Delete tasks that belong to subject cards on this board
     await pool.query(`
@@ -209,6 +217,11 @@ router.delete('/:board_id', requiresAuth(), async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).json({ error: "Board not found" });
     }
+
+    //emit to all members
+    members.rows.forEach(members => {
+      io.to(`user-${members.user_id}`).emit('board-deleted', board_id);
+    });
 
     res.status(204).send();
 
@@ -324,7 +337,7 @@ router.post('/:board_id/share', requiresAuth(), async (req, res) => {
 
       // om det ska updateras i real time när någon delar med en
       // hur ska det funka med rum o sånt?
-      emitUserAdded(io, board_id, result.rows[0]);
+      emitUserAdded(io, user_to_add.rows[0].user_id, board_id);
       return res.status(200).json(result.rows[0]);
 
   } catch (error) {

@@ -50,11 +50,8 @@ export async function patchBoardById(board_id, new_name) {
     .then(res => res.json());
 }
 
-export async function addUserToBoard(board_id, new_user_mail) {
-    return await fetch(`/boards/${board_id}/share`, {
-        method: 'POST',
-        headers: { "Content-Type": "applicaition/json" },
-        body: JSON.stringify({ user_new_mail })
-    })
+
+export async function getPersonalMail() {
+    return await fetch('/usermail')
     .then(res => res.json());
 }

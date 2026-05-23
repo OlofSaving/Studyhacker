@@ -12,6 +12,7 @@ const boardsRouter = require("./routes/boards");
 const calendarRouter = require("./routes/calendar");
 const tasksRouter = require("./routes/tasks");
 const subcardsRouter = require("./routes/subcards");
+const usermailRouter = require("./routes/usermail");
 
 const app = express();
 
@@ -99,6 +100,7 @@ app.get("/", (req, res) => {
 app.use('/tasks', tasksRouter);
 app.use('/boards', boardsRouter);
 app.use('/calendar', calendarRouter);
+app.use('/usermail', usermailRouter);
 
 // borde inte behövas eftersom nested routing
 // boards routar till subcards som routar till tasks

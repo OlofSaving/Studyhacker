@@ -1,8 +1,11 @@
+
 import { 
     createBoard, 
     getAllBoards,
-    deleteBoardById
+    deleteBoardById,
+    getPersonalMail
 } from "/script-API/startpage_API.js";
+
 
 // Add_board knappen
 const add_board_btn = document.getElementById("add-board-btn");
@@ -10,6 +13,24 @@ const boards_container = document.getElementById("boards-container");
 let userInput = null;
 let selectedAlt = null;
 let selectedAltYourBoards = "all";
+const socket = io();
+
+async function initSocket() {
+    const user = await getPersonalMail();
+    socket.emit('join-user-room', user.user_id);
+}
+
+initSocket();
+
+socket.on('board-shared', (data) => {
+    console.log('a board was shared with you, board_id :', data);
+    displayBoards();
+});
+
+socket.on('board-deleted', (data) => {
+    console.log('board was deleted with id:', data);
+    displayBoards();
+})
 
 // function renderBoard(boardName, boardType, boardId) {
 //     const new_board = document.createElement("a");
@@ -75,6 +96,8 @@ function applyBoardFilter(filter) {
 
 async function displayBoards() {
     const boards = await getAllBoards();
+    //debugg
+    console.log("boards fetched:", boards);
 
     boards_container.innerHTML = "";
 

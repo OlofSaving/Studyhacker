@@ -16,7 +16,20 @@ io.on('connection', (socket) => {
   //skickar när en client connectar
   console.log("en användare har anslutit:", socket.id)
 
-  // ----------------- ROOMS -----------------------------
+  //------------------ PERSONAL ROOMS -------------------------
+
+  socket.on('join-user-room', (user_id) => {
+    socket.join(`user-${user_id}`);
+    console.log(`Socket ${socket.id} joined user-${user_id}`);
+  })
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  })
+
+
+
+  // ----------------- BOARD ROOMS -----------------------------
 
   //when a user opens a board, join that rooms board
   socket.on('joinBoard', (board_id) => {
