@@ -33,6 +33,8 @@ button, a {
     justify-content: space-between;
     align-items: center;
     position: relative;
+
+    background-color: #adff2f;
 }
 
 #board-btns-div {
@@ -105,6 +107,8 @@ button, a {
     justify-content: center;
     padding: 20px;
     margin-top: 50px;
+
+    background-color: #ffff00;
 }
 .board {
     border-radius: 10px;
